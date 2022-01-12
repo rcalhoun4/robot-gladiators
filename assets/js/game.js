@@ -1,7 +1,7 @@
 // Game States
 // "WIN" - Player robot has defeated all enemy robots
 //      * Fight and defeat all enemy robots
-// "LOSE" - Player robot's health reaches zero or less
+
 
 var playerName = window.prompt("What is your robot's name?");
 var playerHealth = 100;
@@ -23,6 +23,9 @@ var fight = function(enemyName) {
     
             if (enemyHealth <= 0) {
                 window.alert(enemyName + " has died!");
+                playerMoney = playerMoney + 5;
+                window.alert(playerName + " has received 5G. " + playerName + " now has " + playerMoney + "G.");
+                shop();
                 return;
 
             } else {
@@ -34,6 +37,7 @@ var fight = function(enemyName) {
     
             if (playerHealth <= 0) {
                 window.alert(playerName + " has died!");
+                window.alert("Game Over!")
                 return;
 
             } else {
@@ -54,22 +58,48 @@ var fight = function(enemyName) {
             }
 
         } else {
-            window.alert("You need to choose a valid option. Try again!");
+            window.alert("Please choose a valid option.");
             fight(pickedEnemyName);
         }
     }
    
 }
 
-for(var i = 0; i <= enemyNames.length; i++) {
+var shop = function() {
+    var confirmShop = window.confirm("Would you like to enter the Shop?");
+
+    if (confirmShop) {
+        var promptShop = window.prompt("Welcome to the Shop! Would you like to REFILL your health, UPGRADE your attack, or LEAVE the shop? REFILL and UPGRADE each cost 10G. Please enter 'REFILL', 'UPGRADE', or 'LEAVE' to choose.");
+
+        if (promptShop === "REFILL" || promptShop === "refill") {
+            playerHealth = 100;
+            playerMoney = playerMoney - 10;
+            window.alert(playerName + " now has " + playerHealth + " health, and " + playerMoney + "G!")
+            return;
+
+        } else if (promptShop === "UPGRADE" || promptShop === "upgrade") {
+            playerAttack = playerAttack + 10;
+            playerMoney = playerMoney - 10;
+            window.alert(playerName + " now has " + playerAttack + " attack, and " + playerMoney + "G!");
+            return;
+
+        } else if (promptShop === "LEAVE" || promptShop === "leave") {
+            return;
+
+        } else {
+            window.alert("Please choose a valid option.");
+            shop();
+        }
+    }
+}
+
+for(var i = 0; i < enemyNames.length; i++) {
     var roundNumber = i + 1;
     if (playerHealth > 0) {
+        window.alert(playerName + " has " + playerHealth + " health, " + playerAttack + " attack, and " + playerMoney + "G.");
         window.alert("Welcome to Robot Gladiators Round " + roundNumber + ": " + enemyNames[i] + "!");
         var pickedEnemyName = enemyNames[i];
         enemyHealth = 50;
         fight(pickedEnemyName);
-    } else {
-        window.alert("Game Over!")
-        break;
     }
 }
